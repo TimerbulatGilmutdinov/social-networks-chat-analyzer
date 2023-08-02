@@ -3,6 +3,8 @@ package ru.itis.services.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ru.itis.models.telegram.Chat;
 import ru.itis.models.telegram.Message;
+import ru.itis.models.telegram.Text;
+import ru.itis.models.telegram.TextEntities;
 import ru.itis.services.TelegramChatAnalyzerService;
 
 import java.io.File;
@@ -84,4 +86,33 @@ public class TelegramChatAnalyzerServiceImpl implements TelegramChatAnalyzerServ
         }
         return maxSticker;
     }
+
+    public List<String> getContainsStringMessages(String str, boolean ignoringCase) {
+        List<Message> messages = chat.getMessages();
+        List<String> containsList = new ArrayList<>();
+        if (ignoringCase) {
+            return getContainsListIgnoringCase(messages, str);
+        }
+        for (Message message : messages) {
+            for (TextEntities text : message.getTextEntities()) {
+                if (text.getText().contains(str)) {
+                    containsList.add(text.getText());
+                }
+            }
+        }
+        return containsList;
+    }
+
+    private List<String> getContainsListIgnoringCase(List<Message> messages, String str) {
+        List<String> containsList = new ArrayList<>();
+        for (Message message : messages) {
+            for (TextEntities text : message.getTextEntities()) {
+                if (text.getText().toLowerCase().contains(str.toLowerCase())) {
+                    containsList.add(text.getText());
+                }
+            }
+        }
+        return containsList;
+    }
+
 }
