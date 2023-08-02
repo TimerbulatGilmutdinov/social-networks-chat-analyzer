@@ -7,7 +7,7 @@ import ru.itis.services.TelegramChatAnalyzerService;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
+import java.util.*;
 
 public class TelegramChatAnalyzerServiceImpl implements TelegramChatAnalyzerService {
     private Chat chat;
@@ -26,7 +26,7 @@ public class TelegramChatAnalyzerServiceImpl implements TelegramChatAnalyzerServ
     }
 
     @Override
-    public int getSentMessagesCountByAuthor(String author) {
+    public long getSentMessagesCountByAuthor(String author) {
         List<Message> messages = chat.getMessages();
         int count = 0;
         for (Message message : messages) {
@@ -37,5 +37,51 @@ public class TelegramChatAnalyzerServiceImpl implements TelegramChatAnalyzerServ
             }
         }
         return count;
+    }
+
+    @Override
+    public long getAllSentMessagesCount() {
+        return chat.getMessages().size();
+    }
+
+    @Override
+    public long getSentStickerEmojisCount() {
+        List<Message> messages = chat.getMessages();
+        long count = 0;
+        for (Message message : messages) {
+            if (message.getStickerEmoji() != null) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    @Override
+    public String getMostPopularStickerEmoji() {
+        List<Message> messages = chat.getMessages();
+        Map<String, Integer> stickersMap = new HashMap<>();
+        for (Message message : messages) {
+            if (message.getStickerEmoji() != null) {
+                if (!stickersMap.containsKey(message.getStickerEmoji())) {
+                    stickersMap.put(message.getStickerEmoji(), 1);
+                } else {
+                    int currentCount = stickersMap.get(message.getStickerEmoji());
+                    stickersMap.put(message.getStickerEmoji(), currentCount + 1);
+                }
+            }
+        }
+        List<Integer> list = new ArrayList<>();
+        for (String date : stickersMap.keySet()) {
+            list.add(stickersMap.get(date));
+        }
+        list.sort(Comparator.naturalOrder());
+        int max = list.get(list.size() - 1);
+        String maxSticker = "";
+        for (String date : stickersMap.keySet()) {
+            if (stickersMap.get(date) == max) {
+                maxSticker = date;
+            }
+        }
+        return maxSticker;
     }
 }
