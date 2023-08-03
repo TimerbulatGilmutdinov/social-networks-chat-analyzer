@@ -21,4 +21,6 @@ public class Text {
     @JsonProperty("document_id")
     private String documentId;
     private String text;
+    @JsonProperty("user_id")
+    private long userId;
 }

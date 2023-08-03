@@ -71,6 +71,9 @@ public class Message {
     private Date edited;
     @JsonProperty("edited_unixtime")
     private long editedUnixTime;
+    private List<String> members;
+    @JsonProperty("message_id")
+    private long messageId;
     @JsonProperty("text_entities")
     private List<TextEntities> textEntities;
 }

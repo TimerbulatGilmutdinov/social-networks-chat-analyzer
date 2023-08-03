@@ -143,4 +143,19 @@ public class TelegramChatAnalyzerServiceImpl implements TelegramChatAnalyzerServ
         return containsList;
     }
 
+    @Override
+    public Map<String, Integer> getEachSenderMessagesCount() {
+        List<Message> messages = chat.getMessages();
+        Map<String, Integer> counterMap = new HashMap<>();
+        for (Message message : messages) {
+            if (!counterMap.containsKey(message.getFrom())) {
+                counterMap.put(message.getFrom(), 1);
+            } else {
+                int counter = counterMap.get(message.getFrom());
+                counterMap.put(message.getFrom(), counter + 1);
+            }
+        }
+        return counterMap;
+    }
+
 }
