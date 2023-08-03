@@ -115,4 +115,32 @@ public class TelegramChatAnalyzerServiceImpl implements TelegramChatAnalyzerServ
         return containsList;
     }
 
+    public List<Message> getContainsStringMessagesList(String str, boolean ignoringCase) {
+        List<Message> messages = chat.getMessages();
+        List<Message> containsList = new ArrayList<>();
+        if (ignoringCase) {
+            return getContainsStringMessagesListIgnoringCase(messages, str);
+        }
+        for (Message message : messages) {
+            for (TextEntities text : message.getTextEntities()) {
+                if (text.getText().contains(str)) {
+                    containsList.add(message);
+                }
+            }
+        }
+        return containsList;
+    }
+
+    private List<Message> getContainsStringMessagesListIgnoringCase(List<Message> messages, String str) {
+        List<Message> containsList = new ArrayList<>();
+        for (Message message : messages) {
+            for (TextEntities text : message.getTextEntities()) {
+                if (text.getText().toLowerCase().contains(str.toLowerCase())) {
+                    containsList.add(message);
+                }
+            }
+        }
+        return containsList;
+    }
+
 }
