@@ -27,6 +27,15 @@ public class TelegramChatAnalyzerServiceImpl implements TelegramChatAnalyzerServ
         }
     }
 
+    public void setChat(String path) {
+        File file = new File(path);
+        try {
+            this.chat = objectMapper.readValue(file, Chat.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public long getSentMessagesCountByAuthor(String author) {
         List<Message> messages = chat.getMessages();

@@ -57,6 +57,16 @@ public class Message {
     private LocationInformation locationInformation;
     @JsonProperty("live_location_period_seconds")
     private int liveLocationPeriodSeconds;
+    private Date edited;
+    @JsonProperty("edited_unixtime")
+    private long editedUnixTime;
+    private List<String> members;
+    @JsonProperty("message_id")
+    private long messageId;
+    @JsonProperty("text_entities")
+    private List<TextEntities> textEntities;
+
+    //telegram game fields
     @JsonProperty("via_bot")
     private String viaBot;
     @JsonProperty("game_title")
@@ -68,12 +78,4 @@ public class Message {
     @JsonProperty("game_message_id")
     private long gameMessageId;
     private int score;
-    private Date edited;
-    @JsonProperty("edited_unixtime")
-    private long editedUnixTime;
-    private List<String> members;
-    @JsonProperty("message_id")
-    private long messageId;
-    @JsonProperty("text_entities")
-    private List<TextEntities> textEntities;
 }
